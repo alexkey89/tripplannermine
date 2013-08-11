@@ -116,11 +116,11 @@ $(function () {
   </div>
 
 <!--main menu-->
-  	<ul class="menu1">
+		<ul class="menu1">
 <div id="kotlogo">
-<a href="newhometest.html"/></a>
+<a href="newhometest.php"/></a>
 </div>
-			<li><a href="newtesthome.html" class="selected">Home <img src="icons/PNG/homewhitesmall.png" alt="home"/></a></li>
+			<li><a href="newtesthome.php" class="selected">Home <img src="icons/PNG/homewhitesmall.png" alt="home"/></a></li>
 <!--begin drop down DISCOVER-->
 
 			<li class="droplist">
@@ -144,7 +144,7 @@ $(function () {
 			<!--begin drop down EXPERIENCE -->
 
 			<li class="droplist">
-				<a href="#">Experience <img src="icons/PNG/experience2whitesmall.png" alt="Experience"/></a>
+				<a href="Experience.php">Experience <img src="icons/PNG/experience2whitesmall.png" alt="Experience"/></a>
 				<div class="droplistContainer">
 					<div class="droplistOut">
 						<div class="trianglewrapper"></div>
@@ -163,7 +163,7 @@ $(function () {
 			<!--begin drop down VIEW -->
 
 			<li class="droplist">
-				<a href="#">View <img src="icons/PNG/viewwhitesmall.png" alt="view" /></a>
+				<a href="ViewPage.html">View <img src="icons/PNG/viewwhitesmall.png" alt="view" /></a>
 				<div class="droplistContainer">
 					<div class="droplistOut">
 						<div class="trianglewrapper"></div>
@@ -182,7 +182,7 @@ $(function () {
 <!--begin drop down ENJOY-->
 
 			<li class="droplist">
-				<a href="#">Enjoy <img src="icons/PNG/compasswhitesmall.png" alt="home"/></a>
+				<a href="enjoypage.php">Enjoy <img src="icons/PNG/compasswhitesmall.png" alt="home"/></a>
 				<div class="droplistContainer">
 					<div class="droplistOut">
 						<div class="trianglewrapper"></div>
@@ -281,6 +281,7 @@ maxlength="200" value="" />
 <p> <input type="checkbox" class="regionn" name="region_name_paph" value="4"> Paphos</input></p>
 <p> <input type="checkbox" class="regionn" name="region_name_fam" value="5"> Famagusta</input></p>
 
+<iframe scrolling="no" class="weatherfull1" frameborder="0" allowtransparency="true" src="http://www.meteo.com.cy/cy/en/widgets/weather_w8.aspx" style="width: 300px; height: 267px"></iframe><a target="blank" style="color: #999999; width: 300px; display: block; text-align: center; font: 10px/10px Arial,san-serif; text-decoration: none;" href="http://www.meteo.com.cy">weather forecast by weather.gr</a>
 </div>
 
 <div id="leveldetails">
@@ -343,21 +344,21 @@ maxlength="200" value="" />
  
  <div class="reccom">
 <h3>Finikoudes, Larnaca</h3>
-<p class="breadcrumps">Discover > Regions > Larnaca ><span class="capital">Finikoudes</span></p>
+<p class="breadcrumps">Larnaca ><span class="capital">Finikoudes</span></p>
 <div class="finikoudespic"></div>
 <p>St Andrews monastery is a unique spot amongst Ayia Napa district. If you want to experience a bit more than the amazing nightlife Ayia napa has to offer, this is the place to visit <a href="#" class="amore">…more </a></p>
 </div>
 
 <div class="reccom">
 <h3>Paphos castle, Paphos</h3>
-<p class="breadcrumps">Discover > Regions > Paphos ><span class="capital">Paphos Castle</span></p>
+<p class="breadcrumps">Paphos ><span class="capital">Paphos Castle</span></p>
 <div class="paphoscastlepic"></div>
 <p>St Andrews monastery is a unique spot amongst Ayia Napa district. If you want to experience a bit more than the amazing nightlife Ayia napa has to offer, this is the place to visit <a href="#" class="amore">…more </a></p>
 </div>
 
 <div class="reccom">
 <h3>Aphrodite's rock, Pahos</h3>
-<p class="breadcrumps">Discover > Regions > Paphos ><span class="capital">Aphrodite's rock</span></p>
+<p class="breadcrumps">Paphos ><span class="capital">Aphrodite's rock</span></p>
 <div class="petraromioupic"></div>
 <p>St Andrews monastery is a unique spot amongst Ayia Napa district. If you want to experience a bit more than the amazing nightlife Ayia napa has to offer, this is the place to visit <a href="#" class="amore">…more </a></p>
 </div>
