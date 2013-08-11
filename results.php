@@ -64,7 +64,13 @@ jQuery(document).ready(function () {
 <script type="text/javascript" src="results.js"></script>
 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>
 
+<script type="text/javascript">
+function hideLocations(id) {
+    document.getElementById(id).style.display = 'none';
+    // hide the link
+}
 
+</script>
 
 </head>
 <body onLoad="PreloadImages()">
@@ -88,7 +94,7 @@ jQuery(document).ready(function () {
   </div>
 
 <!--main menu-->
-  	<ul class="menu1">
+		<ul class="menu1">
 <div id="kotlogo">
 <a href="newhometest.html"/></a>
 </div>
@@ -116,7 +122,7 @@ jQuery(document).ready(function () {
 			<!--begin drop down EXPERIENCE -->
 
 			<li class="droplist">
-				<a href="#">Experience <img src="icons/PNG/experience2whitesmall.png" alt="Experience"/></a>
+				<a href="Experience.php">Experience <img src="icons/PNG/experience2whitesmall.png" alt="Experience"/></a>
 				<div class="droplistContainer">
 					<div class="droplistOut">
 						<div class="trianglewrapper"></div>
@@ -135,7 +141,7 @@ jQuery(document).ready(function () {
 			<!--begin drop down VIEW -->
 
 			<li class="droplist">
-				<a href="#">View <img src="icons/PNG/viewwhitesmall.png" alt="view" /></a>
+				<a href="ViewPage.html">View <img src="icons/PNG/viewwhitesmall.png" alt="view" /></a>
 				<div class="droplistContainer">
 					<div class="droplistOut">
 						<div class="trianglewrapper"></div>
@@ -154,7 +160,7 @@ jQuery(document).ready(function () {
 <!--begin drop down ENJOY-->
 
 			<li class="droplist">
-				<a href="#">Enjoy <img src="icons/PNG/compasswhitesmall.png" alt="home"/></a>
+				<a href="enjoypage.php">Enjoy <img src="icons/PNG/compasswhitesmall.png" alt="home"/></a>
 				<div class="droplistContainer">
 					<div class="droplistOut">
 						<div class="trianglewrapper"></div>
@@ -239,21 +245,20 @@ maxlength="200" value="" />
 <section id="recom">
 <h1 class="recctitle"> Select your starting point:</h1>
 <select class="startp" onchange="setActiveStyleSheet(this.value)">
-<option value="Nicosia"> Nicosia </option>
-<option value="Paphos"> Paphos </option>
-<option value="Famagusta"> Protaras </option>
-<option value="Famagusta"> Ayia Napa </option>
-<option value="Larnaca"> Larnaca </option>
-<option value="Limassol"> Limassol </option>
-<option value="Limassol"> Troodos </option>
-<option value="Limassol"> Platres </option>
+<option value="Nicosia" onclick="addNictoMap()" class="Nicosia"> Nicosia </option>
+<option value="Paphos" class="Paphos"> Paphos </option>
+<option value="Famagusta" class="Protaras"> Protaras </option>
+<option value="Famagusta" class="Ayia Napa"> Ayia Napa </option>
+<option value="Larnaca" class="Larnaca"> Larnaca </option>
+<option value="Limassol" class="Limassol"> Limassol </option>
+<option value="Limassol" class="Troodos"> Troodos </option>
+<option value="Limassol" class="Platres"> Platres </option>
 
 
 </select>
 
 <div id="mappos">
 <div id="full_map_results" style="width:1040px;height:300px;"></div>
-
 </div>
 
 <div id="scrollwrap">
@@ -261,6 +266,7 @@ maxlength="200" value="" />
 <h1>
 <?php
 
+/*
 $query1 = mysqli_query($db_server, "SELECT DISTINCT Loc.Location_Name, Reg.Region_Name, Type
 											  FROM Locations Loc  INNER JOIN Attributes Attr ON Loc.Attribute_id = Attr.id INNER JOIN Regions Reg ON Loc.Region_id = Reg.id
 WHERE Reg.id='". $Region_Name_nic . "' OR Reg.id='". $Region_Name_lar . "' OR Reg.id='". $Region_Name_lim . "' OR Reg.id='". $Region_Name_paph . "' OR Reg.id='". $Region_Name_fam . "' ORDER BY Reg.Region_Name, Loc.Location_Name");
@@ -276,6 +282,7 @@ echo '<ul class="reccyp">
 </ul>
 ';
 }
+*/
 
 
 /*TESTING query 2*/ 
@@ -297,19 +304,29 @@ echo '<ul class="reccyp">
 }
 */
 
-/*query to display rec based on attributes */
+if ($Region_set == 1 && $Location_set == 1)
+{
 $query2 = mysqli_query($db_server, "SELECT DISTINCT Loc.Location_Name, Reg.Region_Name, Type
 											  FROM Locations Loc INNER JOIN Attributes Attr ON Loc.Attribute_id = Attr.id INNER JOIN Regions Reg ON Loc.Region_id = Reg.id
-WHERE Attr.ID='" . $level_name_mon . "' OR Attr.ID='" . $Level_Name_meu . "' OR Attr.ID='" . $Level_Name_sight . "' OR Attr.ID='" . $Level_Name_anc . "' OR Attr.ID='" . $Level_Name_gol . "' OR Attr.ID='" . $Level_Name_foot . "' OR Attr.ID='" . $Level_Name_pub  . "' OR Attr.ID='" . $Level_Name_club  . "' OR Attr.ID='" . $Level_Name_mount . "' OR Attr.ID='" . $Level_Name_beach . "' ORDER BY Reg.Region_Name, Loc.Location_Name");
+WHERE (Reg.id='". $Region_Name_nic . "' OR Reg.id='". $Region_Name_lar . "' OR Reg.id='". $Region_Name_lim . "' OR Reg.id='". $Region_Name_paph . "' OR Reg.id='". $Region_Name_fam . "') AND (Attr.ID='" . $level_name_mon . "' OR Attr.ID='" . $Level_Name_meu . "' OR Attr.ID='" . $Level_Name_sight . "' OR Attr.ID='" . $Level_Name_anc . "' OR Attr.ID='" . $Level_Name_gol . "' OR Attr.ID='" . $Level_Name_foot . "' OR Attr.ID='" . $Level_Name_pub  . "' OR Attr.ID='" . $Level_Name_club  . "' OR Attr.ID='" . $Level_Name_mount . "' OR Attr.ID='" . $Level_Name_beach . "') ORDER BY Reg.Region_Name, Loc.Location_Name");
+}else{
+	/*query to display rec based on attributes */
+$query2 = mysqli_query($db_server, "SELECT DISTINCT Loc.Location_Name, Reg.Region_Name, Type
+											  FROM Locations Loc INNER JOIN Attributes Attr ON Loc.Attribute_id = Attr.id INNER JOIN Regions Reg ON Loc.Region_id = Reg.id
+WHERE (Reg.id='". $Region_Name_nic . "' OR Reg.id='". $Region_Name_lar . "' OR Reg.id='". $Region_Name_lim . "' OR Reg.id='". $Region_Name_paph . "' OR Reg.id='". $Region_Name_fam . "') OR (Attr.ID='" . $level_name_mon . "' OR Attr.ID='" . $Level_Name_meu . "' OR Attr.ID='" . $Level_Name_sight . "' OR Attr.ID='" . $Level_Name_anc . "' OR Attr.ID='" . $Level_Name_gol . "' OR Attr.ID='" . $Level_Name_foot . "' OR Attr.ID='" . $Level_Name_pub  . "' OR Attr.ID='" . $Level_Name_club  . "' OR Attr.ID='" . $Level_Name_mount . "' OR Attr.ID='" . $Level_Name_beach . "') ORDER BY Reg.Region_Name, Loc.Location_Name");
+	
+}
+
+$quote = "'";
 											  
 while($result2= mysqli_fetch_assoc($query2)){
 												  
-echo '<ul class="reccyp">
+echo '<ul id="' . $result2['Location_Name'] . '" class="reccyp">
 <li class="regtitle">'. $result2['Location_Name'] . '<img class="typeattrbox" src="icons/PNG/' . $result2['Type'] . '.png"/></li>
 <li class="regtitlesmall">'. $result2['Region_Name'] . '</li>
 <li class="reccypli">
 <img src="pics/' . $result2['Location_Name'] . '.jpg"/></li>
-<li class="interested">Are you interested?<a href="#"><img src="icons/PNG/checkmarkgreen.png"/></a><a href="#"><img src="icons/PNG/closered.png"/></a> </li> 
+<li class="interested">Are you interested?<a href="#"><img src="icons/PNG/checkmarkgreen.png"/></a><img class="hbutton" onclick="hideLocations('.$quote . $result2['Location_Name'] .$quote. ')" src="icons/PNG/closered.png"/> </li> 
 </ul>
 ';
 }
