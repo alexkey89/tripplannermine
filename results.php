@@ -61,7 +61,8 @@ jQuery(document).ready(function () {
 
 <!--js files  -->
 <script type="text/javascript" src="masterjs.js"></script>
-<script type="text/javascript" src="results.js"></script>
+<!-- <script type="text/javascript" src="results.js"></script> -->
+
 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>
 
 <script type="text/javascript">
@@ -242,10 +243,25 @@ maxlength="200" value="" />
 </div>
 </section>
 
+<!--php drop query-->
+<?php
+
+/*
+function retrieve_Region_Coordinates($db_server, $region){
+$query3 = mysqli_query($db_server, "SELECT DISTINCT Latitude, Longitude  
+											  FROM Regions WHERE Region_Name = '" . $region . "'");
+while($result3= mysqli_fetch_assoc($query3)){
+	
+	echo 'var Region_Results = '. $result3['Latitude'] . $result3['Longitude'] . '';
+}
+}
+*/
+
+?>
 <section id="recom">
 <h1 class="recctitle"> Select your starting point:</h1>
 <select class="startp" onchange="setActiveStyleSheet(this.value)">
-<option value="Nicosia" onclick="addNictoMap()" class="Nicosia"> Nicosia </option>
+<option value="Nicosia" onclick="" class="Nicosia"> Nicosia </option>
 <option value="Paphos" class="Paphos"> Paphos </option>
 <option value="Famagusta" class="Protaras"> Protaras </option>
 <option value="Famagusta" class="Ayia Napa"> Ayia Napa </option>
@@ -257,61 +273,57 @@ maxlength="200" value="" />
 
 </select>
 
+<!--
 <div id="mappos">
 <div id="full_map_results" style="width:1040px;height:300px;"></div>
 </div>
+-->
+<div>
+     <div id="map"></div> 
+     <div id="panel"><p class="directtitl">Direction details:</p></div> 
+   </div>
+<script type="text/javascript"> 
+var directionsService = new google.maps.DirectionsService();
+var directionsDisplay = new google.maps.DirectionsRenderer();
+var start_coord = new google.maps.LatLng(35.166667,33.366667);
+
+     var map = new google.maps.Map(document.getElementById('map'), {
+       zoom:8,
+       mapTypeId: google.maps.MapTypeId.ROADMAP,
+center: start_coord
+     });
+
+     directionsDisplay.setMap(map);
+     directionsDisplay.setPanel(document.getElementById('panel'));
+
+	function showRoute(var_or, var_dest) {
+     var request = {
+       origin: var_or, 
+       destination: var_dest,
+       travelMode: google.maps.DirectionsTravelMode.DRIVING
+     };
+
+     directionsService.route(request, function(response, status) {
+       if (status == google.maps.DirectionsStatus.OK) {
+         directionsDisplay.setDirections(response);
+       }
+    });
+}
+</script> 
 
 <div id="scrollwrap">
 <h1 class="recctitle"> We recommend:</h1>
 <h1>
 <?php
 
-/*
-$query1 = mysqli_query($db_server, "SELECT DISTINCT Loc.Location_Name, Reg.Region_Name, Type
-											  FROM Locations Loc  INNER JOIN Attributes Attr ON Loc.Attribute_id = Attr.id INNER JOIN Regions Reg ON Loc.Region_id = Reg.id
-WHERE Reg.id='". $Region_Name_nic . "' OR Reg.id='". $Region_Name_lar . "' OR Reg.id='". $Region_Name_lim . "' OR Reg.id='". $Region_Name_paph . "' OR Reg.id='". $Region_Name_fam . "' ORDER BY Reg.Region_Name, Loc.Location_Name");
-											  
-											  while($result= mysqli_fetch_assoc($query1)){
-												  
-echo '<ul class="reccyp">
-<li class="regtitle">'. $result['Location_Name'] . '<img class="typeattrbox" src="icons/PNG/' . $result['Type'] . '.png"/></li>
-<li class="regtitlesmall">'. $result['Region_Name'] . '</li>
-<li class="reccypli">
-<img src="pics/' . $result['Location_Name'] . '.jpg"/></li>
-<li class="interested">Are you interested?<a href="#"><img src="icons/PNG/checkmarkgreen.png"/></a><a href="#"><img src="icons/PNG/closered.png"/></a> </li> 
-</ul>
-';
-}
-*/
-
-
-/*TESTING query 2*/ 
-
-/*
-$query2 = mysqli_query($db_server, "SELECT DISTINCT Lev.Culture_Name
-											  FROM Levels Loc INNER JOIN Regions Reg ON Lev.id = Lev.Level_ID
-											  WHERE Lev.id='". $level_name_mon . "' OR Lev.id='". $Level_Name_meu . "' OR Lev.id='". $Level_Name_anc . "' OR Lev.id='". $Level_Name_gol . "' OR Lev.id='". $Level_Name_foot . "'");
-											  
-											  while($result= mysqli_fetch_assoc($query2)){
-												  
-echo '<ul class="reccyp">
-<li class="regtitle">'. $result['Location_Name'] . '</li>
-<li class="reccypli">
-<img src="pics/' . $result['Location_Name'] . '.jpg"/></li>
-<li class="interested">Are you interested?<a href="#"><img src="icons/PNG/checkmarkgreen.png"/></a><a href="#"><img src="icons/PNG/closered.png"/></a> </li> 
-</ul>
-';
-}
-*/
-
 if ($Region_set == 1 && $Location_set == 1)
 {
-$query2 = mysqli_query($db_server, "SELECT DISTINCT Loc.Location_Name, Reg.Region_Name, Type
+$query2 = mysqli_query($db_server, "SELECT DISTINCT Loc.Location_Name, Loc.Latitude, Loc.Longitude,  Reg.Region_Name, Reg.Latitude AS Reg_Latitude, Reg.Longitude AS Reg_Longitude, Attr.Type
 											  FROM Locations Loc INNER JOIN Attributes Attr ON Loc.Attribute_id = Attr.id INNER JOIN Regions Reg ON Loc.Region_id = Reg.id
 WHERE (Reg.id='". $Region_Name_nic . "' OR Reg.id='". $Region_Name_lar . "' OR Reg.id='". $Region_Name_lim . "' OR Reg.id='". $Region_Name_paph . "' OR Reg.id='". $Region_Name_fam . "') AND (Attr.ID='" . $level_name_mon . "' OR Attr.ID='" . $Level_Name_meu . "' OR Attr.ID='" . $Level_Name_sight . "' OR Attr.ID='" . $Level_Name_anc . "' OR Attr.ID='" . $Level_Name_gol . "' OR Attr.ID='" . $Level_Name_foot . "' OR Attr.ID='" . $Level_Name_pub  . "' OR Attr.ID='" . $Level_Name_club  . "' OR Attr.ID='" . $Level_Name_mount . "' OR Attr.ID='" . $Level_Name_beach . "') ORDER BY Reg.Region_Name, Loc.Location_Name");
 }else{
 	/*query to display rec based on attributes */
-$query2 = mysqli_query($db_server, "SELECT DISTINCT Loc.Location_Name, Reg.Region_Name, Type
+$query2 = mysqli_query($db_server, "SELECT DISTINCT Loc.Location_Name, Loc.Latitude, Loc.Longitude,  Reg.Region_Name, Reg.Latitude AS Reg_Latitude, Reg.Longitude AS Reg_Longitude, Attr.Type
 											  FROM Locations Loc INNER JOIN Attributes Attr ON Loc.Attribute_id = Attr.id INNER JOIN Regions Reg ON Loc.Region_id = Reg.id
 WHERE (Reg.id='". $Region_Name_nic . "' OR Reg.id='". $Region_Name_lar . "' OR Reg.id='". $Region_Name_lim . "' OR Reg.id='". $Region_Name_paph . "' OR Reg.id='". $Region_Name_fam . "') OR (Attr.ID='" . $level_name_mon . "' OR Attr.ID='" . $Level_Name_meu . "' OR Attr.ID='" . $Level_Name_sight . "' OR Attr.ID='" . $Level_Name_anc . "' OR Attr.ID='" . $Level_Name_gol . "' OR Attr.ID='" . $Level_Name_foot . "' OR Attr.ID='" . $Level_Name_pub  . "' OR Attr.ID='" . $Level_Name_club  . "' OR Attr.ID='" . $Level_Name_mount . "' OR Attr.ID='" . $Level_Name_beach . "') ORDER BY Reg.Region_Name, Loc.Location_Name");
 	
@@ -326,10 +338,12 @@ echo '<ul id="' . $result2['Location_Name'] . '" class="reccyp">
 <li class="regtitlesmall">'. $result2['Region_Name'] . '</li>
 <li class="reccypli">
 <img src="pics/' . $result2['Location_Name'] . '.jpg"/></li>
-<li class="interested">Are you interested?<a href="#"><img src="icons/PNG/checkmarkgreen.png"/></a><img class="hbutton" onclick="hideLocations('.$quote . $result2['Location_Name'] .$quote. ')" src="icons/PNG/closered.png"/> </li> 
+<li class="interested">Are you interested?<img  class="ybutton" onclick="var start_coord = new google.maps.LatLng(' . $result2['Reg_Latitude'] . ',' . $result2['Reg_Longitude'] . ');
+var end_coord = new google.maps.LatLng(' . $result2['Latitude'] . ',' . $result2['Longitude'] . ');showRoute(start_coord,end_coord);return false;" src="icons/PNG/checkmarkgreen.png"/><img class="hbutton" onclick="hideLocations('.$quote . $result2['Location_Name'] .$quote. ')" src="icons/PNG/closered.png"/> </li> 
 </ul>
 ';
 }
+
 
 
 
