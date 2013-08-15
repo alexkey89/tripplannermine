@@ -244,33 +244,28 @@ maxlength="200" value="" />
 </section>
 
 <!--php drop query-->
-<?php
-
-/*
-function retrieve_Region_Coordinates($db_server, $region){
-$query3 = mysqli_query($db_server, "SELECT DISTINCT Latitude, Longitude  
-											  FROM Regions WHERE Region_Name = '" . $region . "'");
-while($result3= mysqli_fetch_assoc($query3)){
-	
-	echo 'var Region_Results = '. $result3['Latitude'] . $result3['Longitude'] . '';
-}
-}
-*/
-
-?>
 <section id="recom">
 <h1 class="recctitle"> Select your starting point:</h1>
-<select class="startp" onchange="setActiveStyleSheet(this.value)">
-<option value="Nicosia" onclick="" class="Nicosia"> Nicosia </option>
+<select class="startp" onchange="var start_coord = new google.maps.LatLng(this.value); alert(default_coord)">
+<?php
+$query3 = mysqli_query($db_server, "SELECT DISTINCT Region_Name, Latitude, Longitude  
+                        FROM Regions");
+                        echo '<script>var default_coord = new google.maps.LatLng(35.166667,33.366667);</script>
+                        ';
+while($result3= mysqli_fetch_assoc($query3)){
+  
+echo '<option value="' . '"' . $result3['Latitude'] . ',' . $result3['Longitude'] . '"' . '" class="' .$result3['Region_Name'] . '"> ' . $result3['Region_Name'] . ' </option>
+  ';
+}
+?>
+<!-- <option value="Nicosia" onclick="" class="Nicosia"> Nicosia </option>
 <option value="Paphos" class="Paphos"> Paphos </option>
 <option value="Famagusta" class="Protaras"> Protaras </option>
 <option value="Famagusta" class="Ayia Napa"> Ayia Napa </option>
 <option value="Larnaca" class="Larnaca"> Larnaca </option>
 <option value="Limassol" class="Limassol"> Limassol </option>
 <option value="Limassol" class="Troodos"> Troodos </option>
-<option value="Limassol" class="Platres"> Platres </option>
-
-
+<option value="Limassol" class="Platres"> Platres </option> -->
 </select>
 
 <!--
@@ -285,12 +280,12 @@ while($result3= mysqli_fetch_assoc($query3)){
 <script type="text/javascript"> 
 var directionsService = new google.maps.DirectionsService();
 var directionsDisplay = new google.maps.DirectionsRenderer();
-var start_coord = new google.maps.LatLng(35.166667,33.366667);
+/* var start_coord = new google.maps.LatLng(35.166667,33.366667); */
 
      var map = new google.maps.Map(document.getElementById('map'), {
        zoom:8,
        mapTypeId: google.maps.MapTypeId.ROADMAP,
-center: start_coord
+center: default_coord
      });
 
      directionsDisplay.setMap(map);
@@ -325,21 +320,21 @@ WHERE (Reg.id='". $Region_Name_nic . "' OR Reg.id='". $Region_Name_lar . "' OR R
 	/*query to display rec based on attributes */
 $query2 = mysqli_query($db_server, "SELECT DISTINCT Loc.Location_Name, Loc.Latitude, Loc.Longitude,  Reg.Region_Name, Reg.Latitude AS Reg_Latitude, Reg.Longitude AS Reg_Longitude, Attr.Type
 											  FROM Locations Loc INNER JOIN Attributes Attr ON Loc.Attribute_id = Attr.id INNER JOIN Regions Reg ON Loc.Region_id = Reg.id
-WHERE (Reg.id='". $Region_Name_nic . "' OR Reg.id='". $Region_Name_lar . "' OR Reg.id='". $Region_Name_lim . "' OR Reg.id='". $Region_Name_paph . "' OR Reg.id='". $Region_Name_fam . "') OR (Attr.ID='" . $level_name_mon . "' OR Attr.ID='" . $Level_Name_meu . "' OR Attr.ID='" . $Level_Name_sight . "' OR Attr.ID='" . $Level_Name_anc . "' OR Attr.ID='" . $Level_Name_gol . "' OR Attr.ID='" . $Level_Name_foot . "' OR Attr.ID='" . $Level_Name_pub  . "' OR Attr.ID='" . $Level_Name_club  . "' OR Attr.ID='" . $Level_Name_mount . "' OR Attr.ID='" . $Level_Name_beach . "') ORDER BY Reg.Region_Name, Loc.Location_Name");
-	
+WHERE (Reg.id='". $Region_Name_nic . "' OR Reg.id='". $Region_Name_lar . "' OR Reg.id='". $Region_Name_lim . "' OR Reg.id='". $Region_Name_paph . "' OR Reg.id='". $Region_Name_fam . "') OR (Attr.ID='" . $level_name_mon . "' OR Attr.ID='" . $Level_Name_meu . "' OR Attr.ID='" . $Level_Name_sight . "' OR Attr.ID='" . $Level_Name_anc . "' OR Attr.ID='" . $Level_Name_gol . "' OR Attr.ID='" . $Level_Name_foot . "' OR Attr.ID='" . $Level_Name_pub  . "' OR Attr.ID='" . $Level_Name_club  . "' OR Attr.ID='" . $Level_Name_mount . "' OR Attr.ID='" . $Level_Name_beach . "') ORDER BY Reg.Region_Name, Loc.Location_Name"); 
+
 }
 
 $quote = "'";
-											  
+
 while($result2= mysqli_fetch_assoc($query2)){
-												  
+
 echo '<ul id="' . $result2['Location_Name'] . '" class="reccyp">
 <li class="regtitle">'. $result2['Location_Name'] . '<img class="typeattrbox" src="icons/PNG/' . $result2['Type'] . '.png"/></li>
 <li class="regtitlesmall">'. $result2['Region_Name'] . '</li>
 <li class="reccypli">
 <img src="pics/' . $result2['Location_Name'] . '.jpg"/></li>
-<li class="interested">Are you interested?<img  class="ybutton" onclick="var start_coord = new google.maps.LatLng(' . $result2['Reg_Latitude'] . ',' . $result2['Reg_Longitude'] . ');
-var end_coord = new google.maps.LatLng(' . $result2['Latitude'] . ',' . $result2['Longitude'] . ');showRoute(start_coord,end_coord);return false;" src="icons/PNG/checkmarkgreen.png"/><img class="hbutton" onclick="hideLocations('.$quote . $result2['Location_Name'] .$quote. ')" src="icons/PNG/closered.png"/> </li> 
+<li class="interested">Are you interested?<img  class="ybutton" onclick="
+var end_coord = new google.maps.LatLng(' . $result2['Latitude'] . ',' . $result2['Longitude'] . ');showRoute(default_coord,end_coord);return false;" src="icons/PNG/checkmarkgreen.png"/><img class="hbutton" onclick="hideLocations('.$quote . $result2['Location_Name'] .$quote. ')" src="icons/PNG/closered.png"/> </li> 
 </ul>
 ';
 }
